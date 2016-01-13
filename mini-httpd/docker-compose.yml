@@ -1,0 +1,17 @@
+# configuration of the httpd container
+httpd:
+
+    # build its image from the nginx directory
+    build:  mini-httpd
+
+    # TCP redirection: port 80 of the host is redirected to port 80 of the container
+    ports:
+        - "80:80"
+
+    # mount external volumes
+    volumes:
+        # content served by the server (read-only mount)
+        - ./www:/html:ro
+ 
+
+# vim:sts=4:sw=4:

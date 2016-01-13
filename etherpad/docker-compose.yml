@@ -1,0 +1,18 @@
+# configure a container named etherpad that:
+# - stores its dirty.db into the var/ subdirectory
+etherpad:
+
+    # build its image from the etherpad directory
+    build:  ./etherpad
+
+    # TCP redirection: redirect port 9001 of the local host to the 9001 port of
+    # the container
+    ports:
+        - "9001:9001"
+
+    volumes:
+        # mount var/ as an external volume to store persistent data
+        - ./var:/opt/etherpad/var
+
+
+# vim:sts=4:sw=4:

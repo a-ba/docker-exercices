@@ -1,0 +1,20 @@
+# configuration of the nginx container
+nginx:
+
+    # build its image from the nginx directory
+    build:  nginx
+
+    # TCP redirection: port 8080 of the host is redirected to port 80 of the container
+    ports:
+        - "8080:80"
+
+    # mount external volumes
+    volumes:
+        # content served by the server (read-only mount)
+        - ./www:/var/www/html:ro
+
+        # logs produced by the server
+        - ./log:/var/log/nginx
+ 
+
+# vim:sts=4:sw=4:
