@@ -69,3 +69,10 @@ CMD ["bin/run.sh"]
 EXPOSE 9001
 VOLUME /opt/etherpad/var
 
+# install npm packages
+#
+# At runtime the script bin/run.sh calls bin/installDeps.sh to install packages
+# for the nodejs server (using the npm tool). We can avoid reinstalling these
+# packages at each run by calling bin/installDeps.sh manually when building the
+# image
+RUN bin/installDeps.sh
