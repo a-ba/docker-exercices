@@ -35,3 +35,17 @@ RUN cd /opt				\
 # commands)
 WORKDIR /opt/etherpad
 
+# make nodejs available as the command 'node'
+RUN ln -s /usr/bin/nodejs /usr/local/bin/node
+
+# install dependencies
+RUN apt-get -y install --no-install-recommends npm
+
+# set the default user to 'etherpad'
+# (will affect all containers running this image, including subsequent RUN
+# commands)
+USER etherpad
+
+# set the default command for the container
+CMD ["bin/run.sh"]
+
