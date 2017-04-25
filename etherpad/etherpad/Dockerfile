@@ -11,7 +11,10 @@ RUN apt-get update && apt-get -y dist-upgrade
 
 
 # install all required packages
-RUN apt-get -y install --no-install-recommends nodejs unzip curl python libssl-dev pkg-config build-essential
+RUN apt-get -y install --no-install-recommends nodejs unzip curl python libssl-dev pkg-config build-essential npm
+
+# make nodejs available as the command 'node'
+RUN ln -s /usr/bin/nodejs /usr/local/bin/node
 
 
 # create a dedicated user
@@ -35,19 +38,48 @@ RUN cd /opt				\
 # commands)
 WORKDIR /opt/etherpad
 
-# make nodejs available as the command 'node'
-RUN ln -s /usr/bin/nodejs /usr/local/bin/node
-
-# install dependencies
-RUN apt-get -y install --no-install-recommends npm
-
 # set the default user to 'etherpad'
 # (will affect all containers running this image, including subsequent RUN
 # commands)
 USER etherpad
 
+
+###############################################################################
+# tune etherpad and install its js dependencies
+###############################################################################
+
+# install npm packages
+#
+# At runtime the script bin/run.sh calls bin/installDeps.sh to install packages
+# for the nodejs server (using the npm tool). We can avoid reinstalling these
+# packages at each run by calling bin/installDeps.sh manually when building the
+# image
+RUN bin/installDeps.sh
+
+# store the session key in the external volume /opt/etherpad/var (to make it
+# persistent)
+RUN ln -s var/SESSIONKEY.txt
+
+
+###############################################################################
+# runtime config
+###############################################################################
+
 # set the default command for the container
 CMD ["bin/run.sh"]
+
+# indicate that the containers running this image shall be terminated with
+# SIGINT (instead of the default SIGTERM) when 'docker stop' is called
+# (it appears the etherpad does not handles SIGTERM)
+STOPSIGNAL SIGINT
+
+# provide a command to be run periodically by the docker engine to check if the
+# container is correctly running. The status is displayed in "docker ps" and
+# full details are provided in "docker inspect"
+#
+# This command ensures verifies that etherpad is responding to HTTP requests
+# within one second.
+HEALTHCHECK CMD curl --fail --max-time 1 -o /dev/null http://localhost:9001/
 
 # Expose tcp port 9001 and mark /opt/etherpad/var as an external volume
 #
@@ -68,28 +100,3 @@ CMD ["bin/run.sh"]
 #	  (see 'docker volume --help')
 EXPOSE 9001
 VOLUME /opt/etherpad/var
-
-# install npm packages
-#
-# At runtime the script bin/run.sh calls bin/installDeps.sh to install packages
-# for the nodejs server (using the npm tool). We can avoid reinstalling these
-# packages at each run by calling bin/installDeps.sh manually when building the
-# image
-RUN bin/installDeps.sh
-
-# indicate that the containers running this image shall be terminated with
-# SIGINT (instead of the default SIGTERM) when 'docker stop' is called
-# (it appears the etherpad does not handles SIGTERM)
-STOPSIGNAL SIGINT
-
-# provide a command to be run periodically by the docker engine to check if the
-# container is correctly running. The status is displayed in "docker ps" and
-# full details are provided in "docker inspect"
-#
-# This command ensures verifies that etherpad is responding to HTTP requests
-# within one second.
-HEALTHCHECK CMD curl --fail --max-time 1 -o /dev/null http://localhost:9001/
-
-# store the session key in the external volume /opt/etherpad/var (to make it
-# persistent)
-RUN ln -s var/SESSIONKEY.txt
