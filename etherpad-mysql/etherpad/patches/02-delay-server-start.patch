@@ -1,0 +1,22 @@
+--- a/bin/run.sh	2015-01-26 14:18:47.691974772 +0100
++++ b/bin/run.sh	2015-01-26 17:28:54.635841434 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ #Move to the folder where ep-lite is installed
+ cd `dirname $0`
+@@ -37,6 +37,13 @@
+ #set the secret session key from the content of the 'SESSION_KEY' environment variable
+ sed -i 's/\("sessionKey" : \)""/\1'\""${SESSION_KEY}"\"/ settings.json
+ 
++# poll the server every seconds until it accepts a connection on tcp/3306
++echo "Waiting until the mysql server is ready..."
++(while	echo -n >/dev/tcp/mysql/3306 ; [ $? -ne 0 ]
++do
++	sleep 1
++done) 2>/dev/null
++
+ SCRIPTPATH=`pwd -P`
+ exec node $SCRIPTPATH/node_modules/ep_etherpad-lite/node/server.js $*
+ 
