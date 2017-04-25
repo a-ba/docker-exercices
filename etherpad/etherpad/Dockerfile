@@ -76,3 +76,8 @@ VOLUME /opt/etherpad/var
 # packages at each run by calling bin/installDeps.sh manually when building the
 # image
 RUN bin/installDeps.sh
+
+# indicate that the containers running this image shall be terminated with
+# SIGINT (instead of the default SIGTERM) when 'docker stop' is called
+# (it appears the etherpad does not handles SIGTERM)
+STOPSIGNAL SIGINT
