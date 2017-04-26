@@ -3,37 +3,58 @@
 # 
 # This config uses 'named' external volumes for storing the persistent data.
 # These are managed with the 'docker volume' command.
-etherpad:
 
-    # build its image from the etherpad directory
-    build:  etherpad
+version: '2'
 
-    # TCP redirection: redirect port 9001 of the local host to the 9001 port of
-    # the container
-    ports:
-        - "9001:9001"
+networks:
+    etherpad_net:
+        ipam:
+            config:
+                - subnet:     "10.123.0.0/24"
 
-    links:
-        # link this container to the mysql container (identified as mysql)
-        - mysql:mysql
+volumes:
+    dev-etherpad-var:
+    dev-etherpad-mysql:
 
-    volumes:
-        # store the var directory into the 'dev-etherpad-var' volume
-        - dev-etherpad-var:/opt/etherpad/var
+services:
 
-mysql:
-    # build its image from the mysql directory
-    build: mysql
+    etherpad:
 
-    # container configuration
-    environment:
-        # root password of the mysql server
-        # NOTE: the container uses this value only when initialising the
-        #       db from scratch (othewise it is ignored)
-        MYSQL_ROOT_PASSWORD:      very_secret_pass
+        # build its image from the etherpad directory
+        build:  etherpad
 
-    volumes:
-        # store mysql data into the 'dev-etherpad-db'
-        - dev-etherpad-mysql:/var/lib/mysql
+        networks:
+            etherpad_net:
+
+        extra_hosts:
+            mysql: "10.123.0.48"
+
+        # TCP redirection: redirect port 9001 of the local host to the 9001 port of
+        # the container
+        ports:
+            - "9001:9001"
+
+        volumes:
+            # store the var directory into the 'dev-etherpad-var' volume
+            - dev-etherpad-var:/opt/etherpad/var
+
+    mysql:
+        # build its image from the mysql directory
+        build: mysql
+
+        networks:
+            etherpad_net:
+                ipv4_address: "10.123.0.48"
+
+        # container configuration
+        environment:
+            # root password of the mysql server
+            # NOTE: the container uses this value only when initialising the
+            #       db from scratch (othewise it is ignored)
+            MYSQL_ROOT_PASSWORD:      very_secret_pass
+
+        volumes:
+            # store mysql data into the 'dev-etherpad-db'
+            - dev-etherpad-mysql:/var/lib/mysql
 
 # vim:sts=4:sw=4:
