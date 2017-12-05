@@ -81,3 +81,11 @@ RUN bin/installDeps.sh
 # SIGINT (instead of the default SIGTERM) when 'docker stop' is called
 # (it appears the etherpad does not handles SIGTERM)
 STOPSIGNAL SIGINT
+
+# provide a command to be run periodically by the docker engine to check if the
+# container is correctly running. The status is displayed in "docker ps" and
+# full details are provided in "docker inspect"
+#
+# This command ensures verifies that etherpad is responding to HTTP requests
+# within one second.
+HEALTHCHECK CMD curl --fail --max-time 1 -o /dev/null http://localhost:9001/
