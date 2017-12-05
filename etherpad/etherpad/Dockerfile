@@ -89,3 +89,7 @@ STOPSIGNAL SIGINT
 # This command ensures verifies that etherpad is responding to HTTP requests
 # within one second.
 HEALTHCHECK CMD curl --fail --max-time 1 -o /dev/null http://localhost:9001/
+
+# store the session key in the external volume /opt/etherpad/var (to make it
+# persistent)
+RUN ln -s var/SESSIONKEY.txt
