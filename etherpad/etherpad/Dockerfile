@@ -10,8 +10,9 @@ FROM debian:buster
 RUN apt-get update && apt-get -y dist-upgrade
 
 
-# TODO: install required packages
-# RUN apt-get -y install --no-install-recommends  ...
+# install all required packages
+RUN apt-get -y install --no-install-recommends nodejs unzip curl python libssl-dev pkg-config build-essential
+
 
 # create a dedicated user
 RUN useradd --create-home etherpad
@@ -22,6 +23,15 @@ RUN useradd --create-home etherpad
 #ADD https://codeload.github.com/ether/etherpad-lite/tar.gz/1.6.1   /opt/source.zip
 COPY 1.6.1.zip   /tmp/src.zip
 
-# TODO
-# ...
+# extract it into /opt/etherpad and make it owned by the etherpad user
+RUN cd /opt				\
+	&&  unzip /tmp/src.zip		\
+	&&  rm /tmp/src.zip		\
+	&&  mv ether-etherpad-lite-* etherpad	\
+	&&  chown -R etherpad: etherpad
+
+# set the default working directory
+# (will affect all containers running this image, including subsequent RUN
+# commands)
+WORKDIR /opt/etherpad
 
