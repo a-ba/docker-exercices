@@ -4,9 +4,12 @@ FROM debian:buster
 # install the latest upgrades
 RUN apt-get update && apt-get -y dist-upgrade
 
-# TODO install nginx
-# ...
+# install nginx
+RUN apt-get -y --no-install-recommends  install nginx-light
 
-# TODO set the default container command command (CMD) to run the nginx daemon
-# ...
+# set the default container command
+# -> run nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
 
+# Tell the docker engine that there will be something listening on the tcp port 80
+EXPOSE 80
