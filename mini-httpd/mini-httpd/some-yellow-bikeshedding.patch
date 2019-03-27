@@ -1,0 +1,11 @@
+--- tmp/mini-httpd/mini_httpd.c	2017-11-30 18:21:12.706312886 +0100
++++ tmp/mini-httpd/mini_httpd.c	2017-11-30 18:27:56.095211485 +0100
+@@ -1610,7 +1610,7 @@
+     <title>Index of %s</title>\n\
+   </head>\n\
+ \n\
+-  <body bgcolor=\"#99cc99\" text=\"#000000\" link=\"#2020ff\" vlink=\"#4040cc\">\n\
++  <body bgcolor=\"#eeee99\" text=\"#000000\" link=\"#2020ff\" vlink=\"#4040cc\">\n\
+     <h4>Index of %s</h4>\n\
+     <pre>\n",
+ 	file, file );
