@@ -265,7 +265,7 @@ Part 3. Container inputs/outputs
     (cd /usr/share/doc && find * -name index.html)
     ```
 
-4.  **(publish)** We have confiremed that we are able to run a HTTP server inside a container
+4.  **(publish)** We have confirmed that we are able to run a HTTP server inside a container
     and serve some content. However this container is in a private network
     (`172.17.0.0/16`), it is not reachable from the public.
 
