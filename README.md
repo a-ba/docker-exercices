@@ -399,7 +399,7 @@ Here are the main commands:
 
 By default `docker-compose up` works in the foreground. If the command is
 interrupted (Control-C), all container are stopped and the command terminates.
-You can use `docker compose up -d` to launch it in the background.
+You can use `docker-compose up -d` to launch it in the background.
 
 ### nginx server
 
@@ -411,7 +411,7 @@ This example is located in the **nginx** directory:
 *   `nginx/nginx/` -> contains sources of our docker image (Dockerfile)
 *   `nginx/www/` -> contains the static files we want to serve
 *   `nginx/log/` -> will store the server logs
-*   `nginx/docker-compose.yml` -> docker compose configuration
+*   `nginx/docker-compose.yml` -> docker-compose configuration
 
 Procedure:
 
@@ -478,7 +478,7 @@ details! We will use the default config and install the source from the
 4.  **(first run)** Once you are done, run:
 
     ```
-    docker compose up
+    docker-compose up
     ```
         
     Once etherpad is started, open <http://localhost:9001/> in your web
