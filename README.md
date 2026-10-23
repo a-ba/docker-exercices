@@ -376,7 +376,7 @@ The objective of this part is to build and run 4 services:
 1.  **nginx:** a simple HTTP server that serves static content
 
 2.  **etherpad:** a collaborative editing application that will require
-    persisten storage in an external volume
+    persistent storage in an external volume
 
 3.  **etherpad-mysql:** the same etherpad application but configured to use a
     mysql db as storage backend (and running in a separate container)
@@ -449,8 +449,8 @@ Procedure:
 
 ### etherpad (dirtydb backend)
 
-In this part we will run a real web application (etherpad) and have its
-persisent data stored in an external volume. We will use the etherpad's default
+In this part, we will run a real web application (etherpad) and have its
+persistent data stored in an external volume. We will use the etherpad's default
 backend (dirty db).
 
 This example is located in the **etherpad** directory:
@@ -520,7 +520,7 @@ details! We will use the default config and install the source from the
     Inside `bin/run.sh` there is a line that runs `bin/installDeps.sh` before
     running etherpad. This is the script that installs the dependencies.
 
-    Modifiy your Dockerfile so that `bin/installDeps.sh` is executed at build
+    Modify your Dockerfile so that `bin/installDeps.sh` is executed at build
     time, then rebuild and relaunch the container twice.
 
     ```
@@ -546,7 +546,7 @@ details! We will use the default config and install the source from the
     docker compose stop
     ```
 
-    The container should have stopped quicky. If it takes 10 seconds, then this
+    The container should have stopped quickly. If it takes 10 seconds, then this
     mean that the container did not stop cleanly, because `docker stop` forces
     the container stop after 10 seconds with a `SIGKILL` signal. This is bad
     because we do not want to play with the devil and corrupt our data.
@@ -570,7 +570,7 @@ details! We will use the default config and install the source from the
     
     There should be only one process: the nodejs server. If you have a *bash*
     (or *sh*) process above it, then it means that node is a child process of
-    *bash*. When docker stops a container, it sends the termination signall
+    *bash*. When docker stops a container, it sends the termination signal
     (`SIGTERM`) to the root process *only*. Because the shell script does not
     forward this signal, the node server cannot know it has to stop.
 
