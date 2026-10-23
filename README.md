@@ -1,7 +1,7 @@
 Docker Exercises
 ================
-
-[Tutorial home](https://people.irisa.fr/Anthony.Baire/)
+<!-- LINK BROKEN -->
+<!-- [Tutorial home](https://people.irisa.fr/Anthony.Baire/) -->
 
 License: Creative Commons BY-NC 3.0
 
