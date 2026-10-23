@@ -666,7 +666,7 @@ You will need to:
 
 1.  configure the mysql container to provide a database and a user account for
     etherpad. The documentation of the mariadb image is available at
-    <https://store.docker.com/images/mariadb>. You may have to tune some
+    <https://hub.docker.com/_/mariadb>. You may have to tune some
     [environment variables](https://hub.docker.com/_/mariadb#environment-variables)
     for the mysql container in your `docker-compose.yml`.
 
