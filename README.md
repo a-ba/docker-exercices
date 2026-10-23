@@ -10,7 +10,7 @@ Part 2. Containers
 ------------------
 
 1.  Check that docker is correctly running and that you have permission to use
-    the engine
+    the engine.
 
     ```
     docker info
@@ -43,7 +43,7 @@ Part 2. Containers
     ```
 
     (you may also write `docker run debian` which is equivalent: `:latest` is
-    the defaut tag if none are provided)
+    the default tag if none are provided).
 
     Nothing happens? actually the container has already terminated, you can
     display it with `docker ps`, but add `-a/--all` because non-running
@@ -81,7 +81,7 @@ Part 2. Containers
     is a pipe, not a tty).
 
 6.  **(tty)** To have a real interactive shell inside our container, we need to
-    allocate a tty with `-t/--tty`
+    allocate a tty with `-t/--tty`.
 
     ```
     docker run -t -i debian
@@ -107,7 +107,6 @@ docker start -i 85bcdca6c38f07e3f8140cbf8b4ad37fd80d731b87c6945012479439a450a443
 docker start -i pensive_hodgkin
 </pre></code>
 
-
 8.  **(commit)** You can modify files inside a container. If you restart the
     same container you can note that these changes are still present. However
     they will not be present in the other container (even if they are running
@@ -124,11 +123,10 @@ docker start -i pensive_hodgkin
 
     This operation creates a new image (visible in `docker images`). This image
     in turn can be used to start a new container.
-    
+
     Note: `docker commit` does not affect the state of the container. If it is
     running, then it just keeps running. You may take as many snapshots as you
     like.
-
 
 9.  **(rm)** You now have too many dead containers in your engine. You should
     use `docker rm` to remove them. Alternatively you can run `docker container
@@ -160,7 +158,6 @@ Part 3. Container inputs/outputs
 --------------------------------
 
 1.  **(external volume)** Run a container with `-v/--volume` to mount an external volume.
-
 
     Eg: mount the `/tmp/myvol` from the host machine at `/myvol` inside the container:
 
