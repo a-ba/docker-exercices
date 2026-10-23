@@ -265,7 +265,7 @@ Part 3. Container inputs/outputs
 
 4.  **(publish)** We have confirmed that we are able to run a HTTP server inside
     a container and serve some content. However this container is in a private
-    network (e.g., `172.17.0.0/16`), it is not reachable from the public.
+    network (e.g., `172.17.0.2/16`), it is not reachable from the public.
 
     To make it reachable, we have to publish the HTTP port (tcp/80) on host
     machine (which may have a public IP address). We add a `-p/--publish`
