@@ -254,7 +254,8 @@ Part 3. Container inputs/outputs
     `http://172.17.x.x/`.
 
     Unfortunately the nginx image is compiled without the autoindex module so it
-    will not display directories without a `index.html` file.
+    will not display directories without a `index.html` file, and it will return
+    a *403 Forbidden error*.
 
     Just find a html document with the following command and append it to your
     url to see if it works.
@@ -262,6 +263,8 @@ Part 3. Container inputs/outputs
     ```
     (cd /usr/share/doc && find * -name index.html)
     ```
+
+    Example: `http://172.17.X.X/python3/index.html`.
 
 4.  **(publish)** We have confirmed that we are able to run a HTTP server inside
     a container and serve some content. However this container is in a private
@@ -280,6 +283,8 @@ Part 3. Container inputs/outputs
     machine. If this happens, you may specify an alternate port, eg: `-p
     1234:80` the server will be reachable at <http://localhost:1234/>
 
+    For instance, you should be able to access
+    <http://localhost/python3/index.html>.
 
 5.  **(user-defined network)**  Our nginx server is reachable from outside.
     Another use case would be to make a containerized server reachable from
