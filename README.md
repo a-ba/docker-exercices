@@ -384,26 +384,25 @@ The objective of this part is to build and run 4 services:
 4.  **mini-httpd:** a webserver that we want to patch, this will require a
     multi-stage build
 
-
-These examples are provided with a docker-compose configuration
+These examples are provided with a docker compose configuration
 (`docker-compose.yml`) to ease their deployment. The documentation for
-docker-compose is available at https://docs.docker.com/compose/
+docker compose is available at https://docs.docker.com/compose/.
 
 Here are the main commands:
 
-*    `docker-compose up` to deploy all the containers, if not present in the
+*    `docker compose up` to deploy all the containers, if not present in the
      engine, they will be be automatically pulled from the registry (for
      container using the "image:" option) or built from source (for those using
      the "build:" option)
-*    `docker-compose build` to force rebuilding the images (useful when the
+*    `docker compose build` to force rebuilding the images (useful when the
      source were modified)
-*    `docker-compose down` to clean up everything
-*    `docker-compose run CONTAINER [ARG0 ARG1 ...]` to run a container with the
+*    `docker compose down` to clean up everything
+*    `docker compose run CONTAINER [ARG0 ARG1 ...]` to run a container with the
      same config as the container *CONTAINER* defined in `docker-compose.yml`
-     (useful for debugging when nothing works -> just run `docker-compose run
+     (useful for debugging when nothing works -> just run `docker compose run
      CONTAINER bash` to have a shell)
 
-By default `docker-compose up` works in the foreground. If the command is
+By default `docker compose up` works in the foreground. If the command is
 interrupted (Control-C), all container are stopped and the command terminates.
 You can use `docker compose up -d` to launch it in the background.
 
@@ -421,18 +420,18 @@ This example is located in the **nginx** directory:
 
 Procedure:
 
-1.  Go to the `nginx/` directory and have a look to the docker-compose
+1.  Go to the `nginx/` directory and have a look to the docker compose
     configuration
 
-2.  Run `docker-compose up` to build the image and run the container. Note: the
+2.  Run `docker compose up` to build the image and run the container. Note: the
     build should work but the container will stop immediately (because nginx is
     not yet installed).
 
 3.  Edit the Dockerfile to have the nginx package installed in the image and
     override the default container command so that nginx is run when we do
-    `docker-compose up`. Note: by default `docker-compose up` will not rebuild
-    the image, you should run `docker-compose up --build` (or run
-    `docker-compose build` before).
+    `docker compose up`. Note: by default `docker compose up` will not rebuild
+    the image, you should run `docker compose up --build` (or run
+    `docker compose build` before).
 
 4.  Once it is running, open http://localhost:8080/ in your browser to see it
     working and check the `log/` directory to ensure that the logs are there.
@@ -459,7 +458,7 @@ This example is located in the **etherpad** directory:
 *   `etherpad/etherpad/Dockerfile`  -> Dockerfile draft
 *   `etherpad/etherpad/1.6.1.zip`   -> sources of the 1.6.1 release
 *   `etherpad/var/`                 -> external volume
-*   `etherpad/docker-compose.yml`   -> docker-compose configuration
+*   `etherpad/docker-compose.yml`   -> docker compose configuration
 
 The installation procedure is documented here:
 <https://github.com/ether/etherpad-lite/tree/1.6.1#installation>. You should keep it open,
@@ -467,11 +466,11 @@ and have a look in it during the exercise because we do not give all the
 details! We will use the default config and install the source from the
 1.6.1.zip archive provided in this directory.
 
-1.  Go to the `etherpad/` and have a look to the docker-compose configuration
+1.  Go to the `etherpad/` and have a look to the docker compose configuration
     and to the draft Dockerfile
 
 2.  Modify the Dockerfile to install the required debian packages. Then run
-    `docker-compose build`.
+    `docker compose build`.
 
 3.  Continue to modify the Dockerfile to:
     *   extract the sources in `/opt/etherpad/` and make them owned by the
@@ -502,7 +501,7 @@ details! We will use the default config and install the source from the
     Then Stop the container (hit Ctrl-C) and remove it completely with:
 
     ```
-    docker-compose rm etherpad 
+    docker compose rm etherpad 
     ```
 
     List the content of the `var/` subdirectory, normally the dirtydb files
@@ -525,11 +524,11 @@ details! We will use the default config and install the source from the
     time, then rebuild and relaunch the container twice.
 
     ```
-    docker-compose build
-    docker-compose up
+    docker compose build
+    docker compose up
     (Ctrl-C)
-    docker-compose rm
-    docker-compose up
+    docker compose rm
+    docker compose up
     ```
 
     The second run should be much faster.
@@ -537,14 +536,14 @@ details! We will use the default config and install the source from the
 7.  **(graceful stop)** Stop your container and restart it in the background.
 
     ```
-    docker-compose stop
-    docker-compose up -d
+    docker compose stop
+    docker compose up -d
     ```
 
     Now stop it:
 
     ```
-    docker-compose stop
+    docker compose stop
     ```
 
     The container should have stopped quicky. If it takes 10 seconds, then this
@@ -555,7 +554,7 @@ details! We will use the default config and install the source from the
     Check the output of the container:
 
     ```
-    docker-compose logs
+    docker compose logs
     ```
 
     There is effectively no messages of etherpad shutting down. It did not
@@ -564,7 +563,7 @@ details! We will use the default config and install the source from the
     Restart the container, display the list of processes inside the container.
         
     ```
-    docker-compose up -d
+    docker compose up -d
     (wait until ready)
     docker top etherpad_etherpad_1
     ```
@@ -578,7 +577,7 @@ details! We will use the default config and install the source from the
     Look at `bin/run.sh` and find the place where nodejs is run.
 
     ```
-    docker-compose run etherpad cat bin/run.sh | less
+    docker compose run etherpad cat bin/run.sh | less
     ```
 
     Its actually the last line and the command is prefixed with `exec` for
@@ -597,15 +596,15 @@ details! We will use the default config and install the source from the
     
     If in this case, fix your `CMD` line, rebuild the image, start the
     container, check with `docker top` that the sh is gone and stop with
-    `docker-compose stop`.
-    
+    `docker compose stop`.
+
     ...
 
     Then container does not stop properly, again!
     
     We have actually a second issue (or a first issue, if you did the CMD line
     right), but there is a hint : when we started the container in the
-    foreground (`docker-compose up`), it stopped gracefully when hitting
+    foreground (`docker compose up`), it stopped gracefully when hitting
     Ctrl-C. In fact nodejs expects to be terminated with the `SIGINT` signal,
     but not with `SIGTERM` (the default signal sent by docker and by the unix
     `kill` command).
@@ -633,7 +632,7 @@ details! We will use the default config and install the source from the
     with `docker diff`.
 
     ```
-    docker-compose up -d
+    docker compose up -d
     (wait until ready)
     docker diff etherpad_etherpad_1
     ```
@@ -675,7 +674,7 @@ You will need to:
 2.  provide a `settings.json` file in your etherpad image to use the mysql
     database.
 
-3.  once done, run `docker-compose up` and see what happens.
+3.  once done, run `docker compose up` and see what happens.
 
 4.  if you have extra time, you can modify the etherpad image to delay the
     execution of nojs until the mysql server is ready and responding.
