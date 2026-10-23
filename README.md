@@ -115,8 +115,8 @@ docker start -i pensive_hodgkin
     command `docker diff` to show the difference of a container from its image.
 
     Remember that all changes inside a container are thrown away when the
-    container is removed. If we want save a container filesytem for later use,
-    we have to *commit* the conainer (i.e take a snapshot).
+    container is removed. If we want save a container filesystem for later use,
+    we have to *commit* the container (i.e take a snapshot).
 
     ```
     docker commit CONTAINER
