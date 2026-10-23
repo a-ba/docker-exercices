@@ -23,8 +23,8 @@ services:
             - dev-etherpad-var:/opt/etherpad/var
 
     mysql:
-        # use the official mariadb image from the docker store
-        # https://store.docker.com/images/mariadb
+        # use the official mariadb image from the docker hub
+        # https://hub.docker.com/_/mariadb
         image: mariadb:10
 
         # TODO: environment variables
