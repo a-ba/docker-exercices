@@ -1,8 +1,8 @@
 # base image: latest debian release
 FROM debian:latest
 
-# install the latest upgrades
-RUN apt-get update && apt-get -y dist-upgrade
+# install the latest upgrades (reduce verbosity)
+RUN apt-get -qq update && apt-get -qqy dist-upgrade
 
 # TODO install nginx
 # ...
