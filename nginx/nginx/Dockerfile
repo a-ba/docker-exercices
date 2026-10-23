@@ -1,5 +1,5 @@
-# base image: last debian release
-FROM debian:buster
+# base image: latest debian release
+FROM debian:latest
 
 # install the latest upgrades
 RUN apt-get update && apt-get -y dist-upgrade
