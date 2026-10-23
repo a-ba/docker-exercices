@@ -277,29 +277,11 @@ Part 3. Container inputs/outputs
     machine. If this happens, you may specify an alternate port, eg: `-p
     1234:80` the server will be reachable at <http://localhost:1234/>
 
-5.  **(legacy links)** Our nginx server is reachable from outside. Another use
-    case would be to make a server reachable from another container (for
-    example, a web application in a server may want to use a database hosted in
-    another container).
 
-    To test this feature we run a busybox container *(it's lightweight and it
-    provides the wget http client)*
-    
-    ```
-    docker run --rm -t -i --link nginx:http-server busybox
-    ```
-
-    This makes the `nginx` container reachable from this new container under
-    the alias `http-server`. Inside the busybox container we make a HTTP
-    request with wget:
-
-    ```
-    wget http://http-server/
-    ```
-
-6.  **(user-defined network)** Legacy links are deprecated and that is
-    unfortunate. The alternative is have the two containers connected to the
-    same internal network.
+5.  **(user-defined network)**  Our nginx server is reachable from outside.
+    Another use case would be to make a containerized server reachable from
+    another container (for example, a web application in a server may want to
+    use a database hosted in another container).
 
     By default they are launched on the `bridge` network. Depending on the
     configuration of your daemon (in `/etc/docker/daemon.json`),
