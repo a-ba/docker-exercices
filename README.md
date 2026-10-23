@@ -166,7 +166,7 @@ Part 3. Container inputs/outputs
     ```
 
     > **Note:** on Windows/MacOS over the [Docker
-    > Toolbox](https://docs.docker.com/toolbox/overview/), your docker engine
+    > Desktop](https://docs.docker.com/desktop/), your docker engine
     > is running inside a virtual machine. This means `/tmp/myvol` refers to
     > the `/tmp/myvol` path *inside* the VM. You can mount directories from
     > your host system only if they are shared with the VM. By default the
@@ -224,11 +224,11 @@ Part 3. Container inputs/outputs
     need to know where the served directory must be mounted.
 
     The [documentation of the nginx
-    image](https://store.docker.com/images/nginx#how-to-use-this-image) says
-    the content is to be located in `/usr/share/nginx/html`. So let's mount our
-    doc directory at this place. Note that nginx does not require write access
-    on these files, therefore it is a good idea to append `:ro` to make the
-    mount read-only.
+    image](https://hub.docker.com/_/nginx#how-to-use-this-image) says the
+    content is to be located in `/usr/share/nginx/html`. So let's mount our doc
+    directory at this place. Note that nginx does not require write access on
+    these files, therefore it is a good idea to append `:ro` to make the mount
+    read-only.
 
     ```
     docker run -d --name nginx -v /usr/share/doc:/usr/share/nginx/html:ro nginx:stable-alpine
