@@ -283,23 +283,25 @@ Part 3. Container inputs/outputs
     another container (for example, a web application in a server may want to
     use a database hosted in another container).
 
-    By default they are launched on the `bridge` network. Depending on the
-    configuration of your daemon (in `/etc/docker/daemon.json`),
-    inter-container communications may or may not be authorized on the default
-    bridge (in case we have `icc: false`).
+    This is possible by having the two containers connected to the same internal
+    network.
 
-    If icc is enabled, we can already communicate between the containers (using
-    the container name as TCP/IP destination).
+    By default, containers are launched on the main `bridge` network.
+    However, in a production context, to improve the security, it is preferable
+    to put unrelated containers in separate networks.
 
-    ```
-    docker run --rm -t -i busybox wget http://nginx/
-    ```
-    
-    In a production context, to improve the security, it would be preferable to
-    put unrelated containers in separate networks.
+    > **Note:** Depending on the configuration of your daemon (in `/etc/docker/
+    > daemon.json`), inter-container communications may or may not be authorized
+    > on the default bridge (in case we have `icc: false`).
+    > If `icc` is enabled, containers on the default bridge can already
+    > communicate, but only using their IP address: the default bridge does not
+    > provide name resolution. Using the container name as TCP/IP destination is
+    > only possible on a user-defined network, like the one we create below.
+    >
 
-    To test this we will create a dedicated network named `ngnet`, to let our
-    two containers communicate privately.
+    To test this feature we run a busybox container *(it's lightweight and it
+    provides the wget http client)* and we will create a dedicated network named
+    `ngnet`, to let our two containers communicate privately.
 
     ```
     docker network create ngnet
@@ -312,17 +314,23 @@ Part 3. Container inputs/outputs
     docker network inspect ngnet
     ```
 
-    At container creation time, we can use `-n/--net` to select a specific
-    network (instead of the default `bridge`). But it is also possible to
-    connect and disconnext dynamically the containers to the networks
-    (especially to allow having a container connected to multiple network).
+    and
 
-    We connect our `nginx` container to the `ngnet` network:
-    
+    ```
+    docker network inspect ngnet | grep Subnet
+    ```
+
+    At container creation time, we can use `--network` to select a specific
+    network (instead of the default `bridge`). But it is also possible to
+    connect and disconnect dynamically the containers to networks (especially to
+    allow having a container connected to multiple networks).
+
+    We start by connecting our running `nginx` container to the `ngnet` network:
+
     ```
     docker network connect ngnet nginx
     ```
-    
+
     The container is now connected to the two networks (`bridge` on eth0 and
     `ngnet` on eth1). We can verify this:
 
@@ -330,11 +338,24 @@ Part 3. Container inputs/outputs
     docker exec nginx ip addr
     ```
 
-    We can now run our busybox container with `--net ngnet` to be on this
+    We can now run our busybox container with `--network ngnet` to be on this
     network:
 
     ```
-    docker run --rm -t -i --net ngnet busybox wget http://nginx/
+    docker run --rm -t -i --network ngnet busybox wget http://nginx/
+    ```
+
+    which should return something like:
+
+    ```
+    Connecting to nginx (172.X.X.X:80)
+    wget: server returned error: HTTP/1.1 403 Forbidden
+    ```
+
+    Then, you can try:
+
+    ```
+    docker run --rm -t -i --network ngnet busybox wget http://nginx/python3/index.html
     ```
 
 
