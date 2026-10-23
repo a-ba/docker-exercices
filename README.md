@@ -379,14 +379,14 @@ The objective of this part is to build and run 4 services:
     persistent storage in an external volume
 
 3.  **etherpad-mysql:** the same etherpad application but configured to use a
-    mysql db as storage backend (and running in a separate container)
+    mysql database as storage backend (and running in a separate container)
 
 4.  **mini-httpd:** a webserver that we want to patch, this will require a
     multi-stage build
 
 These examples are provided with a docker compose configuration
 (`docker-compose.yml`) to ease their deployment. The documentation for
-docker compose is available at https://docs.docker.com/compose/.
+docker compose is available at <https://docs.docker.com/compose/>.
 
 Here are the main commands:
 
@@ -433,7 +433,7 @@ Procedure:
     the image, you should run `docker compose up --build` (or run
     `docker compose build` before).
 
-4.  Once it is running, open http://localhost:8080/ in your browser to see it
+4.  Once it is running, open <http://localhost:8080/> in your browser to see it
     working and check the `log/` directory to ensure that the logs are there.
 
     > **Note:** on Windows/MacOS, if your docker engine is running inside a
@@ -441,7 +441,7 @@ Procedure:
     > VirtualBox (i.e redirect host TCP connections to 127.0.0.1:8080 towards
     > the 8080 port of the guest)
 
-5.  In your Dockerfile you may add a `EXPOSE` instruction to declare that the
+5.  In your Dockerfile, you may add a `EXPOSE` instruction to declare that the
     container listens to its port 80 and a `VOLUME` to tell that
     `/var/www/html` and `/var/log/nginx` are expected to be mounted from
     external volumes.
@@ -461,10 +461,10 @@ This example is located in the **etherpad** directory:
 *   `etherpad/docker-compose.yml`   -> docker compose configuration
 
 The installation procedure is documented here:
-<https://github.com/ether/etherpad-lite/tree/1.6.1#installation>. You should keep it open,
-and have a look in it during the exercise because we do not give all the
-details! We will use the default config and install the source from the
-1.6.1.zip archive provided in this directory.
+<https://github.com/ether/etherpad-lite/tree/1.6.1#installation>.
+You should keep it open, and have a look in it during the exercise because we do
+not give all the details! We will use the default config and install the source
+from the 1.6.1.zip archive provided in this directory.
 
 1.  Go to the `etherpad/` and have a look to the docker compose configuration
     and to the draft Dockerfile
@@ -485,7 +485,7 @@ details! We will use the default config and install the source from the
     ```
     docker compose up
     ```
-        
+
     Once etherpad is started, open <http://localhost:9001/> in your web
     browser and test the app.
 
@@ -550,7 +550,7 @@ details! We will use the default config and install the source from the
     mean that the container did not stop cleanly, because `docker stop` forces
     the container stop after 10 seconds with a `SIGKILL` signal. This is bad
     because we do not want to play with the devil and corrupt our data.
-    
+
     Check the output of the container:
 
     ```
@@ -561,13 +561,13 @@ details! We will use the default config and install the source from the
     catch the termination signal from the docker engine.
 
     Restart the container, display the list of processes inside the container.
-        
+
     ```
     docker compose up -d
     (wait until ready)
     docker top etherpad_etherpad_1
     ```
-    
+
     There should be only one process: the nodejs server. If you have a *bash*
     (or *sh*) process above it, then it means that node is a child process of
     *bash*. When docker stops a container, it sends the termination signal
@@ -592,8 +592,8 @@ details! We will use the default config and install the source from the
 
     The first form is ok, it tells docker to execute ["bin/run.sh"]. The second
     is not. When provides as a string, the CMD command is run inside a shell.
-    Thus the second form is equivalent to `CMD ["sh", "-c", "bin/run.sh"]`. 
-    
+    Thus the second form is equivalent to `CMD ["sh", "-c", "bin/run.sh"]`.
+
     If in this case, fix your `CMD` line, rebuild the image, start the
     container, check with `docker top` that the sh is gone and stop with
     `docker compose stop`.
@@ -601,9 +601,9 @@ details! We will use the default config and install the source from the
     ...
 
     Then container does not stop properly, again!
-    
+
     We have actually a second issue (or a first issue, if you did the CMD line
-    right), but there is a hint : when we started the container in the
+    right), but there is a hint: when we started the container in the
     foreground (`docker compose up`), it stopped gracefully when hitting
     Ctrl-C. In fact nodejs expects to be terminated with the `SIGINT` signal,
     but not with `SIGTERM` (the default signal sent by docker and by the unix
@@ -612,10 +612,10 @@ details! We will use the default config and install the source from the
     Add a `STOPSIGNAL` line to your Dockerfile to tell docker that this
     container must be stopped with `SIGINT`. Then rebuild and test your image,
     the container should now stop properly.
-    
+
 7.  **(healthcheck)** When running in production, if our container crashed and
     the process terminates, docker can report it to us (the container has
-    terminated!). However if it freezes, the docker engine will have no clue
+    terminated!). However, if it freezes, the docker engine will have no clue
     that something wrong is happening inside the container.
 
     We can provide a `HEALTHCHECK` command in our Dockerfile. When present,
@@ -626,7 +626,6 @@ details! We will use the default config and install the source from the
     can use the *curl* utility for that). The rebuild and restart, the
     healthcheck status should show in `docker ps`.
 
-    
 8.  **(session key)** Our container is running and our data are in the `var/`
     external. We want to make sure we did not miss anything, we will check that
     with `docker diff`.
@@ -636,7 +635,7 @@ details! We will use the default config and install the source from the
     (wait until ready)
     docker diff etherpad_etherpad_1
     ```
-    
+
     This command shows the differences in the container filesystem (from the
     docker image). In the list we can see that the session key `SESSIONKEY.txt`
     is stored outside the external volume, thus it will be dropped across
@@ -684,7 +683,7 @@ You will need to:
 
 In this exercise, we will build
 [mini-httpd](https://acme.com/software/mini_httpd/) from sources and install it
-in a docker image. This implies a **multi-stage** build: your Dockerfile will build two images:
+in a docker image. This implies a **multi-stage** build, as your Dockerfile will build two images:
 
 1.  a first image with the development toolchain (compiler,...) that will build
     the binary
