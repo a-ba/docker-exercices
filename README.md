@@ -191,9 +191,10 @@ Part 3. Container inputs/outputs
     will not care about the management of this directory (apart from creating
     it).
 
-2.  **(named volume)** Alternatively we can create a *named volume*. That is a volume managed by
-    docker (and by stored by default in `/var/lib/docker/volumes`). A named
-    volume is a volume that does not start with `/`. Example:
+2.  **(named volume)** Alternatively we can create a *named volume*. That is a
+    volume managed by docker (and by stored by default in
+    `/var/lib/docker/volumes`). A named volume is a volume that does not start
+    with `/`. Example:
 
     ```
     docker run --rm -t -i -v my-named-volume:/myvol debian
@@ -233,7 +234,7 @@ Part 3. Container inputs/outputs
     ```
     docker run -d --name nginx -v /usr/share/doc:/usr/share/nginx/html:ro nginx:stable-alpine
     ```
-    
+
     The server is now running somewhere in a container. Since this container
     has a separate network stack, it has a different IP address. There are
     multiple ways to obtain this IP address:
@@ -248,10 +249,12 @@ Part 3. Container inputs/outputs
         ```
         docker exec nginx ip addr show dev eth0
         ```
-    
+
     Once you know this address you can open it in your web browser ->
-    `http://172.17.x.x/`. Unfortunately the nginx image is compiled without the
-    autoindex module so it will not display directories without a index.html file.
+    `http://172.17.x.x/`.
+
+    Unfortunately the nginx image is compiled without the autoindex module so it
+    will not display directories without a `index.html` file.
 
     Just find a html document with the following command and append it to your
     url to see if it works.
@@ -260,11 +263,11 @@ Part 3. Container inputs/outputs
     (cd /usr/share/doc && find * -name index.html)
     ```
 
-4.  **(publish)** We have confirmed that we are able to run a HTTP server inside a container
-    and serve some content. However this container is in a private network
-    (`172.17.0.0/16`), it is not reachable from the public.
+4.  **(publish)** We have confirmed that we are able to run a HTTP server inside
+    a container and serve some content. However this container is in a private
+    network (e.g., `172.17.0.0/16`), it is not reachable from the public.
 
-    To make it reachable we have to publish the HTTP port (tcp/80) on host
+    To make it reachable, we have to publish the HTTP port (tcp/80) on host
     machine (which may have a public IP address). We add a `-p/--publish`
     option:
 
