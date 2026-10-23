@@ -17,7 +17,7 @@ Part 2. Containers
     ```
 
 2.  **(pull)** Pull an image from the official registry, eg: `debian:latest`
-    (you can browse <https://store.docker.com> if you want to find other
+    (you can browse <https://hub.docker.com/> if you want to find other
     images).
 
     ```
@@ -26,11 +26,9 @@ Part 2. Containers
 
     `debian` is the repository name, and `:latest` is a tag that identifies an
     image in the repository (for the case of the debian repository it is the
-    [latest stable
-    release](https://store.docker.com/images/debian#about-this-image)). You
-    could also write `:jessie` or `:stretch` to use a specific version of the
+    [latest stable release](https://hub.docker.com/_/debian)). You could also
+    write `:trixie` or `:bookworm` to use a specific version of this
     distribution.
-    
 
     You can check that your image is present in the docker engine:
 
