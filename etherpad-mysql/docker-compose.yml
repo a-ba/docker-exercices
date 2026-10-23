@@ -27,7 +27,7 @@ services:
         # https://store.docker.com/images/mariadb
         image: mariadb:10
 
-        # TODO: environement variables
+        # TODO: environment variables
         environment:
             FOO: "BAR"
 
