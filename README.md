@@ -613,7 +613,7 @@ from the 1.6.1.zip archive provided in this directory.
     container must be stopped with `SIGINT`. Then rebuild and test your image,
     the container should now stop properly.
 
-7.  **(healthcheck)** When running in production, if our container crashed and
+8.  **(healthcheck)** When running in production, if our container crashed and
     the process terminates, docker can report it to us (the container has
     terminated!). However, if it freezes, the docker engine will have no clue
     that something wrong is happening inside the container.
@@ -626,7 +626,7 @@ from the 1.6.1.zip archive provided in this directory.
     can use the *curl* utility for that). The rebuild and restart, the
     healthcheck status should show in `docker ps`.
 
-8.  **(session key)** Our container is running and our data are in the `var/`
+9.  **(session key)** Our container is running and our data are in the `var/`
     external. We want to make sure we did not miss anything, we will check that
     with `docker diff`.
 
@@ -648,8 +648,8 @@ from the 1.6.1.zip archive provided in this directory.
     Modify the Dockerfile to have the session key stored in the var volume (for
     example with a symbolic link).
 
-9. **(metadata)** You should add `EXPOSE` and a `VOLUME` line to your
-   Dockerfile to tell about the listened tcp port and the external volume.
+10. **(metadata)** You should add `EXPOSE` and a `VOLUME` line to your
+    Dockerfile to tell about the listened tcp port and the external volume.
 
 
 ### etherpad (mysql backend)
