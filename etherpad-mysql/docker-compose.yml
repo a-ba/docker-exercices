@@ -19,13 +19,16 @@ services:
             - dev-etherpad-var:/opt/etherpad/var
 
     mysql:
-        # use the official mariadb image from the docker hub
+        # use the official mariadb image (will be pulled from the docker hub)
         # https://hub.docker.com/_/mariadb
         image: mariadb:10
 
-        # TODO: environment variables
+        # container configuration
         environment:
-            FOO: "BAR"
+            MYSQL_ROOT_PASSWORD:      very_secret_root
+            MYSQL_USER:               etherpad
+            MYSQL_PASSWORD:           etherpad
+            MYSQL_DATABASE:           etherpad
 
         volumes:
             # store mysql data into the 'dev-etherpad-db'

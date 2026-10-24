@@ -1,0 +1,22 @@
+# use a mysql db for storage backend
+#
+# db server hostname    = 'mysql'
+# db name/user/password = 'etherpad'
+--- a/settings.json	2015-01-26 12:49:04.000000000 +0100
++++ b/settings.json	2015-01-26 14:07:04.435992753 +0100
+@@ -35,10 +35,13 @@
+ 
+   //The Type of the database. You can choose between dirty, postgres, sqlite and mysql
+   //You shouldn't use "dirty" for for anything else than testing or development
+-  "dbType" : "dirty",
++  "dbType" : "mysql",
+   //the database specific settings
+   "dbSettings" : {
+-                   "filename" : "var/dirty.db"
++	"host":		"mysql",
++	"database":	"etherpad",
++	"user":		"etherpad",
++	"password":	"etherpad"
+                  },
+                  
+   /* An Example of MySQL Configuration
