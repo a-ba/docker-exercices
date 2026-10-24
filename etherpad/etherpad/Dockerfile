@@ -55,3 +55,23 @@ USER etherpad
 # set the default command for the container
 CMD ["bin/run.sh"]
 
+# Expose tcp port 9001 and mark /opt/etherpad/var as an external volume
+#
+# NOTE:	these lines are not strictly required, since 'docker run' allows
+#	publishing arbitrary ports and binding arbitrary mount points.
+#
+#	Including them in the Dockerfile (thus in the image metadata) has the
+#	following effects:
+#	  EXPOSE port
+#	  - it documents the port listened by the container (shown by
+#	    'docker ps' and 'docker inspect'), it does NOT publish it nor
+#	    restrict access to other ports
+#	  - all exposed ports are automatically published (on random host
+#	    ports) when 'docker run' is called with option -P (publish all)
+#	  VOLUME path
+#	  - if the container is started without binding this path, then an
+#	    anonymous volume is created on-the-fly for storing this path
+#	    (see 'docker volume --help')
+EXPOSE 9001
+VOLUME /opt/etherpad/var
+
