@@ -1,8 +1,51 @@
+# ---------------------------------------------------------------------
+# Stage 0  build an intermediary docker image that builds a customised
+#          version of mini-httpd
+# ---------------------------------------------------------------------
+
+# base image: last debian release
+FROM debian:latest AS builder
+
+# add the source repositories (for each 'Types: deb' line in the file
+# /etc/apt/sources.list.d/debian.sources, we add the 'deb-src' type, thus
+# 'Types: deb' becomes 'Types: deb deb-src')
+RUN sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
+
+# update the package lists
+RUN apt-get -qqy update
+
+# install all packages required to build mini-httpd
+RUN apt-get -qqy build-dep mini-httpd
+
+# download the source package and extract it in /tmp/mini-httpd
+RUN cd /tmp && apt-get -qqy source mini-httpd && mv mini-httpd-* mini-httpd
+
+# run all subsequent command inside /tmp/mini-httpd (instead of /)
+WORKDIR /tmp/mini-httpd
+
+# apply our patches
+COPY *.patch /tmp/
+RUN cat /tmp/*.patch | patch -p2
+
+# build the package and rename it as mini-httpd.deb
+RUN dpkg-buildpackage -b && cd .. && mv mini-httpd_*.deb mini-httpd.deb
+
+
+# ---------------------------------------------------------------------
+#  Stage 1  build the final image
+# ---------------------------------------------------------------------
+
 # base image: last debian release
 FROM debian:latest
 
-# install mini-httpd
-RUN apt-get -qqy update && apt-get -qqy install mini-httpd
+# install libssl3t64 (requisite for mini-httpd)
+RUN apt-get -qqy update && apt-get -qqy install libssl3t64
+
+# get the mini-httpd.deb package we built in stage 0
+COPY --from=builder /tmp/mini-httpd.deb /tmp/
+
+# install it (and remove the .deb)
+RUN dpkg -i /tmp/mini-httpd.deb && rm /tmp/*.deb
 
 #
 # default runtime config
