@@ -1,4 +1,4 @@
-FROM etherpad_etherpad
+FROM etherpad-etherpad
 
 # TODO
 # ...

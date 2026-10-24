@@ -565,7 +565,7 @@ from the 1.6.1.zip archive provided in this directory.
     ```
     docker compose up -d
     (wait until ready)
-    docker top etherpad_etherpad_1
+    docker top etherpad-etherpad-1
     ```
 
     There should be only one process: the nodejs server. If you have a *bash*
@@ -633,7 +633,7 @@ from the 1.6.1.zip archive provided in this directory.
     ```
     docker compose up -d
     (wait until ready)
-    docker diff etherpad_etherpad_1
+    docker diff etherpad-etherpad-1
     ```
 
     This command shows the differences in the container filesystem (from the
@@ -658,7 +658,7 @@ As a second step, will will extend our etherpad image to make it use a mysql
 server as a storage backend.
 
 This exercise is located in the **etherpad-mysql** directory. The Dockerfile
-starts with `FROM etherpad_etherpad` to use the image from the previous
+starts with `FROM etherpad-etherpad` to use the image from the previous
 exercise as a base. For the mysql container we will use the official image
 provided by the mariadb project.
 
