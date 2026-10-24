@@ -466,6 +466,19 @@ You should keep it open, and have a look in it during the exercise because we do
 not give all the details! We will use the default config and install the source
 from the 1.6.1.zip archive provided in this directory.
 
+> **Note:** the Dockerfile draft is based on **Debian 10 "buster"**, which
+> reached its End-of-Life and no longer receives security updates. We use it
+> on purpose: etherpad 1.6.1 does not run on the recent nodejs versions shipped
+> by newer Debian releases, and keeping this old setup lets you observe a
+> behaviour of the application that has been fixed in modern releases (see the
+> *graceful stop* step).
+>
+> Since the regular Debian mirrors no longer serve buster, the draft already
+> configures apt to download the packages from the archive
+> (`archive.debian.org`). This is fine for this exercise, but **do not use an
+> End-of-Life base image for real applications**.
+
+
 1.  Go to the `etherpad/` and have a look to the docker compose configuration
     and to the draft Dockerfile
 
