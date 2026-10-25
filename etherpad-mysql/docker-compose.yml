@@ -9,6 +9,9 @@ services:
         # build its image from the etherpad directory
         build:  etherpad
 
+        networks:
+            - etherpad_net
+
         # TCP redirection: redirect port 9001 of the local host to the 9001 port of
         # the container
         ports:
@@ -21,6 +24,9 @@ services:
     mysql:
         # build its image from the mysql directory
         build: mysql
+
+        networks:
+            - etherpad_net
 
         # container configuration
         environment:
@@ -37,5 +43,9 @@ services:
 volumes:
     dev-etherpad-var:
     dev-etherpad-mysql:
+
+# private network shared by etherpad and its database
+networks:
+    etherpad_net:
 
 # vim:sts=4:sw=4:
