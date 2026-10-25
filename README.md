@@ -691,6 +691,9 @@ You will need to:
 4.  if you have extra time, you can modify the etherpad image to delay the
     execution of nojs until the mysql server is ready and responding.
 
+> **NB:** The etherpad container can reach the database using the hostname
+> `mysql` (the name of the service), since docker compose connects all the
+> containers of the project to the same network.
 
 ### mini-httpd
 
