@@ -14,10 +14,6 @@ services:
         ports:
             - "9001:9001"
 
-        links:
-            # link this container to the mysql container (identified as mysql)
-            - mysql:mysql
-
         volumes:
             # store the var directory into the 'dev-etherpad-var' volume
             - dev-etherpad-var:/opt/etherpad/var
