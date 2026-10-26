@@ -43,11 +43,11 @@ Part 2. Containers
     ```
 
     (you may also write `docker run debian` which is equivalent: `:latest` is
-    the default tag if none are provided).
+    the default tag if none is provided).
 
     Nothing happens? actually the container has already terminated, you can
     display it with `docker ps`, but add `-a/--all` because non-running
-    container are not displayed by default.
+    (stopped) containers are not displayed by default.
 
     ```
     docker ps -a
@@ -66,7 +66,7 @@ Part 2. Containers
     docker run debian cat /etc/motd
     ```
 
-5.  **(stdin)** Let's go back to bash, this time we want interact with the
+5.  **(stdin)** Let's go back to bash, this time we want to interact with the
     shell. To keep stdin open, we launch the container with `-i/--interactive`.
 
     ```
@@ -111,10 +111,11 @@ docker start -i pensive_hodgkin
     same container you can note that these changes are still present. However
     they will not be present in the other container (even if they are running
     the same image) because docker uses a copy-on-write filesystem. Use the
-    command `docker diff` to show the difference of a container from its image.
+    command `docker diff` to show the difference between a container and its
+    original image.
 
     Remember that all changes inside a container are thrown away when the
-    container is removed. If we want save a container filesystem for later use,
+    container is removed. If we want to save a container filesystem for later use,
     we have to *commit* the container (i.e take a snapshot).
 
     ```
@@ -130,7 +131,7 @@ docker start -i pensive_hodgkin
 
 9.  **(rm)** You now have too many dead containers in your engine. You should
     use `docker rm` to remove them. Alternatively you can run `docker container
-    prune` which removes *all* dead container.
+    prune` which removes *all* dead containers.
 
 10. **(extras)** If you still have extra time, you can experiment
     * the other `docker run` options we introduced so far:
@@ -147,7 +148,7 @@ docker start -i pensive_hodgkin
       keeps running in the background)
         * `docker inspect` to display the metadata of a container (json format)
         * `docker cp` to transfer files from/into the container
-        * `docker exec` to have launch a separate command (**very useful** for providing a debugging shell -> `docker exec -t -i CONTAINER bash`)
+        * `docker exec` to launch a separate command (**very useful** for providing a debugging shell -> `docker exec -t -i CONTAINER bash`)
         * `docker top` to display the processes running inside the container
         * `docker stats` to display usage statistics
         * `docker logs` to display the container output
@@ -192,7 +193,7 @@ Part 3. Container inputs/outputs
     it).
 
 2.  **(named volume)** Alternatively we can create a *named volume*. That is a
-    volume managed by docker (and by stored by default in
+    volume managed by docker (and stored by default in
     `/var/lib/docker/volumes`). A named volume is a volume that does not start
     with `/`. Example:
 
@@ -254,10 +255,10 @@ Part 3. Container inputs/outputs
     `http://172.17.x.x/`.
 
     Unfortunately the nginx image is compiled without the autoindex module so it
-    will not display directories without a `index.html` file, and it will return
+    will not display directories without an `index.html` file, and it will return
     a *403 Forbidden error*.
 
-    Just find a html document with the following command and append it to your
+    Just find an html document with the following command and append it to your
     url to see if it works.
 
     ```
@@ -266,7 +267,7 @@ Part 3. Container inputs/outputs
 
     Example: `http://172.17.X.X/python3/index.html`.
 
-4.  **(publish)** We have confirmed that we are able to run a HTTP server inside
+4.  **(publish)** We have confirmed that we are able to run an HTTP server inside
     a container and serve some content. However this container is in a private
     network (e.g., `172.17.0.2/16`), it is not reachable from the public.
 
@@ -391,11 +392,11 @@ docker compose is available at <https://docs.docker.com/compose/>.
 Here are the main commands:
 
 *    `docker compose up` to deploy all the containers, if not present in the
-     engine, they will be be automatically pulled from the registry (for
-     container using the "image:" option) or built from source (for those using
+     engine, they will be automatically pulled from the registry (for
+     containers using the "image:" option) or built from source (for those using
      the "build:" option)
 *    `docker compose build` to force rebuilding the images (useful when the
-     source were modified)
+     sources were modified)
 *    `docker compose down` to clean up everything
 *    `docker compose run CONTAINER [ARG0 ARG1 ...]` to run a container with the
      same config as the container *CONTAINER* defined in `docker-compose.yml`
@@ -403,13 +404,13 @@ Here are the main commands:
      CONTAINER bash` to have a shell)
 
 By default `docker compose up` works in the foreground. If the command is
-interrupted (Control-C), all container are stopped and the command terminates.
+interrupted (Control-C), all containers are stopped and the command terminates.
 You can use `docker compose up -d` to launch it in the background.
 
 ### nginx server
 
-We will build an image with a nginx server from the debian distribution and run
-it to serve some static content.
+We will build an image with an nginx server from the debian distribution and
+run it to serve some static content.
 
 This example is located in the **nginx** directory:
 
@@ -441,8 +442,8 @@ Procedure:
     > VirtualBox (i.e redirect host TCP connections to 127.0.0.1:8080 towards
     > the 8080 port of the guest)
 
-5.  In your Dockerfile, you may add a `EXPOSE` instruction to declare that the
-    container listens to its port 80 and a `VOLUME` to tell that
+5.  In your Dockerfile, you may add an `EXPOSE` instruction to declare that the
+    container listens to its port 80 and `VOLUME` instructions to tell that
     `/var/www/html` and `/var/log/nginx` are expected to be mounted from
     external volumes.
 
@@ -450,7 +451,7 @@ Procedure:
 ### etherpad (dirtydb backend)
 
 In this part, we will run a real web application (etherpad) and have its
-persistent data stored in an external volume. We will use the etherpad's default
+persistent data stored in an external volume. We will use etherpad's default
 backend (dirty db).
 
 This example is located in the **etherpad** directory:
@@ -462,8 +463,8 @@ This example is located in the **etherpad** directory:
 
 The installation procedure is documented here:
 <https://github.com/ether/etherpad-lite/tree/1.6.1#installation>.
-You should keep it open, and have a look in it during the exercise because we do
-not give all the details! We will use the default config and install the source
+You should keep it open, and refer to it during the exercise because we do
+not give all the details! We will use the default config and install the sources
 from the 1.6.1.zip archive provided in this directory.
 
 > **Note:** the Dockerfile draft is based on **Debian 10 "buster"**, which
@@ -479,7 +480,7 @@ from the 1.6.1.zip archive provided in this directory.
 > End-of-Life base image for real applications**.
 
 
-1.  Go to the `etherpad/` and have a look to the docker compose configuration
+1.  Cd to `etherpad/` and have a look to the docker compose configuration
     and to the draft Dockerfile
 
 2.  Modify the Dockerfile to install the required debian packages. Then run
@@ -514,7 +515,7 @@ from the 1.6.1.zip archive provided in this directory.
     Then Stop the container (hit Ctrl-C) and remove it completely with:
 
     ```
-    docker compose rm etherpad 
+    docker compose rm etherpad
     ```
 
     List the content of the `var/` subdirectory, normally the dirtydb files
@@ -526,8 +527,8 @@ from the 1.6.1.zip archive provided in this directory.
 6.  **(startup time)** When running etherpad, you noticed that its startup
     script installs some npm dependencies before running the app. This normally
     happens only during the first run. Unfortunately since we are running in an
-    immutable image (the container filesystem is copy-on-write) all then
-    packages are drop when the container is removed and they have to be
+    immutable image (the container filesystem is copy-on-write) all the
+    packages are dropped when the container is removed and they thus have to be
     reinstalled at every subsequent run.
 
     Inside `bin/run.sh` there is a line that runs `bin/installDeps.sh` before
@@ -560,8 +561,8 @@ from the 1.6.1.zip archive provided in this directory.
     ```
 
     The container should have stopped quickly. If it takes 10 seconds, then this
-    mean that the container did not stop cleanly, because `docker stop` forces
-    the container stop after 10 seconds with a `SIGKILL` signal. This is bad
+    means that the container did not stop cleanly, because `docker stop` forces
+    the container to stop after 10 seconds with a `SIGKILL` signal. This is bad
     because we do not want to play with the devil and corrupt our data.
 
     Check the output of the container:
@@ -581,11 +582,11 @@ from the 1.6.1.zip archive provided in this directory.
     docker top etherpad-etherpad-1
     ```
 
-    There should be only one process: the nodejs server. If you have a *bash*
-    (or *sh*) process above it, then it means that node is a child process of
-    *bash*. When docker stops a container, it sends the termination signal
-    (`SIGTERM`) to the root process *only*. Because the shell script does not
-    forward this signal, the node server cannot know it has to stop.
+    There should be only one process: the nodejs server. If you have another
+    *bash* (or *sh*) process above it, then it means that node is a child
+    process of *bash*. When docker stops a container, it sends the termination
+    signal (`SIGTERM`) to the root process *only*. Because the shell script
+    does not forward this signal, the node server cannot know it has to stop.
 
     Look at `bin/run.sh` and find the place where nodejs is run.
 
@@ -604,23 +605,24 @@ from the 1.6.1.zip archive provided in this directory.
     *   `CMD bin/run.sh`
 
     The first form is ok, it tells docker to execute ["bin/run.sh"]. The second
-    is not. When provides as a string, the CMD command is run inside a shell.
+    is not. When provides as a string, the CMD command is run in a shell.
     Thus the second form is equivalent to `CMD ["sh", "-c", "bin/run.sh"]`.
 
+
     If in this case, fix your `CMD` line, rebuild the image, start the
-    container, check with `docker top` that the sh is gone and stop with
+    container, check with `docker top` that sh is gone and stop with
     `docker compose stop`.
 
     ...
 
-    Then container does not stop properly, again!
+    The container does still not stop properly!
 
     We have actually a second issue (or a first issue, if you did the CMD line
     right), but there is a hint: when we started the container in the
     foreground (`docker compose up`), it stopped gracefully when hitting
     Ctrl-C. In fact nodejs expects to be terminated with the `SIGINT` signal,
-    but not with `SIGTERM` (the default signal sent by docker and by the unix
-    `kill` command).
+    rather than with `SIGTERM` (the default signal sent by docker and by
+    the Unix `kill` command).
 
     Add a `STOPSIGNAL` line to your Dockerfile to tell docker that this
     container must be stopped with `SIGINT`. Then rebuild and test your image,
@@ -636,12 +638,13 @@ from the 1.6.1.zip archive provided in this directory.
     display its result in the status of the container.
 
     Add a `HEALTHCHECK` command that ensures that the app is responding (you
-    can use the *curl* utility for that). The rebuild and restart, the
-    healthcheck status should show in `docker ps`.
+    can use the *curl* utility for that). Then rebuild and restart, the
+    healthcheck status should appear in `docker ps`.
+
 
 9.  **(session key)** Our container is running and our data are in the `var/`
-    external. We want to make sure we did not miss anything, we will check that
-    with `docker diff`.
+    external volume. We want to make sure we did not miss anything, we will
+    check that with `docker diff`.
 
     ```
     docker compose up -d
@@ -649,25 +652,25 @@ from the 1.6.1.zip archive provided in this directory.
     docker diff etherpad-etherpad-1
     ```
 
-    This command shows the differences in the container filesystem (from the
-    docker image). In the list we can see that the session key `SESSIONKEY.txt`
-    is stored outside the external volume, thus it will be dropped across
-    restarts.
+    This command shows the differences between the container filesystem and the
+    docker image used to run it. In the list we can see that the session key
+    `SESSIONKEY.txt` is not stored in the external volume, which implies that
+    it will be dropped across restarts.
 
     While this is not critical for the app (a new key is regenerated anyway),
-    it can be a burden for the users because their session will be closed when
+    it can be a burden for the users because their sessions will be closed when
     the server is restarted.
 
     Modify the Dockerfile to have the session key stored in the var volume (for
     example with a symbolic link).
 
-10. **(metadata)** You should add `EXPOSE` and a `VOLUME` line to your
-    Dockerfile to tell about the listened tcp port and the external volume.
+10. **(metadata)** You should add an `EXPOSE` and a `VOLUME` line to your
+    Dockerfile to inform about the listened tcp port and the external volume.
 
 
 ### etherpad (mysql backend)
 
-As a second step, will will extend our etherpad image to make it use a mysql
+As a second step, we will extend our etherpad image to make it use a mysql
 server as a storage backend.
 
 This exercise is located in the **etherpad-mysql** directory. The Dockerfile
@@ -689,7 +692,7 @@ You will need to:
 3.  once done, run `docker compose up` and see what happens.
 
 4.  if you have extra time, you can modify the etherpad image to delay the
-    execution of nojs until the mysql server is ready and responding.
+    execution of nodejs until the mysql server is ready and responding.
 
 > **NB:** The etherpad container can reach the database using the hostname
 > `mysql` (the name of the service), since docker compose connects all the
