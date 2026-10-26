@@ -3,35 +3,37 @@
 # 
 # This config uses 'named' external volumes for storing the persistent data.
 # These are managed with the 'docker volume' command.
-etherpad:
+services:
+    etherpad:
 
-    # build its image from the etherpad directory
-    build:  etherpad
+        # build its image from the etherpad directory
+        build:  etherpad
 
-    # TCP redirection: redirect port 9001 of the local host to the 9001 port of
-    # the container
-    ports:
-        - "9001:9001"
+        # TCP redirection: redirect port 9001 of the local host to the 9001 port of
+        # the container
+        ports:
+            - "9001:9001"
 
-    links:
-        # link this container to the mysql container (identified as mysql)
-        - mysql:mysql
+        volumes:
+            # store the var directory into the 'dev-etherpad-var' volume
+            - dev-etherpad-var:/opt/etherpad/var
 
-    volumes:
-        # store the var directory into the 'dev-etherpad-var' volume
-        - dev-etherpad-var:/opt/etherpad/var
+    mysql:
+        # use the official mariadb image from the docker hub
+        # https://hub.docker.com/_/mariadb
+        image: mariadb:10
 
-mysql:
-    # use the official mariadb image from the docker store
-    # https://store.docker.com/images/mariadb
-    image: mariadb:10
+        # TODO: environment variables
+        environment:
+            FOO: "BAR"
 
-    # TODO: environement variables
-    environment:
-        FOO: "BAR"
+        volumes:
+            # store mysql data into the 'dev-etherpad-db'
+            - dev-etherpad-mysql:/var/lib/mysql
 
-    volumes:
-        # store mysql data into the 'dev-etherpad-db'
-        - dev-etherpad-mysql:/var/lib/mysql
+# named volumes used by the services (managed with 'docker volume')
+volumes:
+    dev-etherpad-var:
+    dev-etherpad-mysql:
 
 # vim:sts=4:sw=4:

@@ -1,4 +1,6 @@
-# base image: last debian release
+# base image: buster debian release
+# NB: End-of-Life release used on purpose for this exercise: see README file.
+#     Do NOT use it for real applications!
 FROM debian:buster
 
 
@@ -6,12 +8,17 @@ FROM debian:buster
 # system configuration (packages, user account) + unpack etherpad-lite
 ###############################################################################
 
-# get the latest package lists and apply the needed upgrades
-RUN apt-get update && apt-get -y dist-upgrade
+# get the necessary archived package lists and apply the needed upgrades
+RUN printf '%s\n' \
+      "deb http://archive.debian.org/debian buster main" \
+      "deb http://archive.debian.org/debian-security buster/updates main" \
+      "deb http://archive.debian.org/debian buster-updates main" \
+    > /etc/apt/sources.list
+RUN apt-get -qq update && apt-get -qqy dist-upgrade
 
 
 # TODO: install required packages
-# RUN apt-get -y install --no-install-recommends  ...
+# RUN apt-get -qqy install --no-install-recommends  ...
 
 # create a dedicated user
 RUN useradd --create-home etherpad
